@@ -37,13 +37,12 @@
 .*.swo
 
 ## Auxiliary and intermediate files from other packages:
-TestPrograms/Result.txt
+**/Result.txt
 **/*.dot
 **/*.pdf
 *.dot
 *.out
 *.o
-*.bc
 *.pyc
 *.d
 *.json

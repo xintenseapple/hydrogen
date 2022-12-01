@@ -7,6 +7,7 @@
 #include "Graph.hpp"
 #include "Graph_Line.hpp"
 #include "MVICFG.hpp"
+#include "Graph_Function.hpp"
 #include "Module.hpp"
 #include <chrono>
 
@@ -60,6 +61,7 @@ int main(int argc, char *argv[]) {
         deletedLines.insert(deletedLines.end(), iterDel.begin(), iterDel.end());
         matchedLines.insert(iterMatch.begin(), iterMatch.end());
       } // End loop for diffMap
+      std::cout << "Code Churn: " << addedLines.size() + deletedLines.size() << std::endl;
       /* Update Map Edges */
       getEdgesForAddedLines(MVICFG, ICFG, addedLines, diffMap);
       /* Update the matched lines to get new temporary variable mapping for old lines */
@@ -73,7 +75,7 @@ int main(int argc, char *argv[]) {
   auto mvicfgStop = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double, std::milli> mvicfgBuildTime = mvicfgStop - mvicfgStart;
   MVICFG->printGraph("MVICFG");
-  std::cout << "Finished Building MVICFG in " << mvicfgBuildTime.count() << "ms\n";
+  std::cout << "Finished Building MVICFG in " << mvicfgBuildTime.count() << "ms" << std::endl;;
 
   unsigned int correct_version = MVICFG->getGraphVersion();
   for (unsigned int i = 1; i < correct_version; i++) {
@@ -82,6 +84,15 @@ int main(int argc, char *argv[]) {
     std::cout << "\tAdded Paths: " << paths.first << std::endl;
     std::cout << "\tDeleted Paths: " << paths.second << std::endl;
   }
+
+  unsigned long long graph_instructions = 0;
+  for (auto graph_function : MVICFG->getGraphFunctions()) {
+    for (auto graph_line : graph_function->getFunctionLines()) {
+      graph_instructions += graph_line->getLineInstructions().size();
+    }
+  }
+
+  std::cout << "Size of MVICFG (nodes, edges): " << graph_instructions << ", " << MVICFG->getGraphEdges().size() << std::endl;
 
   /* Write output to file */
   std::ofstream rFile("Result.txt", std::ios::trunc);
