@@ -69,15 +69,20 @@ int main(int argc, char *argv[]) {
     } // End check for iterModuleEnd
   }   // End loop for Module
 
-  auto paths = calculateChangedPaths(MVICFG, 1, 2);
-  std::cout << "Added Paths: " << paths.first << std::endl;
-  std::cout << "Deleted Paths: " << paths.second << std::endl;
-
   /* Stop timer */
   auto mvicfgStop = std::chrono::high_resolution_clock::now();
-  auto mvicfgBuildTime = std::chrono::duration_cast<std::chrono::nanoseconds>(mvicfgStop - mvicfgStart);
+  std::chrono::duration<double, std::milli> mvicfgBuildTime = mvicfgStop - mvicfgStart;
   MVICFG->printGraph("MVICFG");
-  std::cout << "Finished Building MVICFG in " << mvicfgBuildTime.count() << "ns\n";
+  std::cout << "Finished Building MVICFG in " << mvicfgBuildTime.count() << "ms\n";
+
+  unsigned int correct_version = MVICFG->getGraphVersion();
+  for (unsigned int i = 1; i < correct_version; i++) {
+    auto paths = calculateChangedPaths(MVICFG, i, correct_version);
+    std::cout << "Changed Path Between V" << i << " and V" << correct_version << ":" << std::endl;
+    std::cout << "\tAdded Paths: " << paths.first << std::endl;
+    std::cout << "\tDeleted Paths: " << paths.second << std::endl;
+  }
+
   /* Write output to file */
   std::ofstream rFile("Result.txt", std::ios::trunc);
   if (!rFile.is_open()) {
