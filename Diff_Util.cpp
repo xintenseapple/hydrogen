@@ -5,7 +5,7 @@
  */
 #include "Diff_Util.hpp"
 namespace hydrogen_framework {
-void Diff_Ses::addSequence(elem e, long long beforeIdx, long long afterIdx, const int type) {
+void Diff_Ses::addSequence(const elem &e, long long beforeIdx, long long afterIdx, const int type) {
   elemInfo info;
   info.beforeIdx = beforeIdx;
   info.afterIdx = afterIdx;
@@ -93,7 +93,7 @@ void Diff_Util::init() {
   } // End check for M < N
   delta = N - M;
   offset = M + 1;
-  fp = NULL;
+  fp = nullptr;
 } // End init
 
 long long Diff_Util::snake(const long long &k, const long long &above, const long long &below) {

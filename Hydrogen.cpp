@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
       std::map<Graph_Line *, Graph_Line *> matchedLines; /**<Map From ICFG Graph_Line to MVICFG Graph_Line */
       std::list<Diff_Mapping> diffMap = generateLineMapping(*iterModule, *iterModuleNext);
       Graph *ICFG = buildICFG(*iterModuleNext, ++graphVersion);
-      for (auto iter : diffMap) {
+      for (const auto& iter : diffMap) {
         /* iter.printFileInfo(); */
         std::list<Graph_Line *> iterAdd = addToMVICFG(MVICFG, ICFG, iter, graphVersion);
         std::list<Graph_Line *> iterDel = deleteFromMVICFG(MVICFG, ICFG, iter, graphVersion);
@@ -61,18 +61,23 @@ int main(int argc, char *argv[]) {
         matchedLines.insert(iterMatch.begin(), iterMatch.end());
       } // End loop for diffMap
       /* Update Map Edges */
-      getEdgesForAddedLines(MVICFG, ICFG, addedLines, diffMap, graphVersion);
+      getEdgesForAddedLines(MVICFG, ICFG, addedLines, diffMap);
       /* Update the matched lines to get new temporary variable mapping for old lines */
       updateMVICFGVersion(MVICFG, addedLines, deletedLines, diffMap, graphVersion);
       /* Update Map Version */
       MVICFG->setGraphVersion(graphVersion);
     } // End check for iterModuleEnd
-  } // End loop for Module
+  }   // End loop for Module
+
+  auto paths = calculateChangedPaths(MVICFG, 1, 2);
+  std::cout << "Added Paths: " << paths.first << std::endl;
+  std::cout << "Deleted Paths: " << paths.second << std::endl;
+
   /* Stop timer */
   auto mvicfgStop = std::chrono::high_resolution_clock::now();
-  auto mvicfgBuildTime = std::chrono::duration_cast<std::chrono::milliseconds>(mvicfgStop - mvicfgStart);
+  auto mvicfgBuildTime = std::chrono::duration_cast<std::chrono::nanoseconds>(mvicfgStop - mvicfgStart);
   MVICFG->printGraph("MVICFG");
-  std::cout << "Finished Building MVICFG in " << mvicfgBuildTime.count() << "ms\n";
+  std::cout << "Finished Building MVICFG in " << mvicfgBuildTime.count() << "ns\n";
   /* Write output to file */
   std::ofstream rFile("Result.txt", std::ios::trunc);
   if (!rFile.is_open()) {
@@ -80,7 +85,7 @@ int main(int argc, char *argv[]) {
     return 5;
   } // End check for Result file
   rFile << "Input Args:\n";
-  for (auto i = 0; i < argc; ++ i) {
+  for (auto i = 0; i < argc; ++i) {
     rFile << argv[i] << "  ";
   } // End loop for writing arguments
   rFile << "\n";

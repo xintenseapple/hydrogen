@@ -37,6 +37,9 @@
 .*.swo
 
 ## Auxiliary and intermediate files from other packages:
+TestPrograms/Result.txt
+**/*.dot
+**/*.pdf
 *.dot
 *.out
 *.o
@@ -48,8 +51,7 @@
 ## Doc Folder:
 # Docs/
 ## Build Folder:
-Build/
-BuildNinja/
+build/
 .idea/
 .ccls-cache/
 ## Vim backup, undo and swap files

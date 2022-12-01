@@ -37,7 +37,7 @@ std::list<Diff_Mapping> generateLineMapping(Module *firstMod, Module *secondMod)
  * Get Graph_Line(s) from given source line
  * Returns empty list if no Graph_Line is not found
  */
-std::list<Graph_Line *> getGraphLinesGivenLine(Graph *graph, long long lineNo, std::string fileName);
+std::list<Graph_Line *> getGraphLinesGivenLine(Graph *graph, long long lineNo, const std::string &fileName);
 
 /**
  * Get predecessor of a given Graph_Line
@@ -61,8 +61,8 @@ std::string getGraphLineInstructionsAsString(Graph_Line *line);
  * Currently will throw an warning if heuristic skips more than 2 OpCode to match the lines
  * Returns NULL if no heuristic match is found
  */
-Graph_Line *resolveMatchedLinesWithNoExtactStringMatch(std::list<Graph_Line *> matchedLines, std::string lineFromString,
-                                                       unsigned int graphVersion);
+Graph_Line *resolveMatchedLinesWithNoExactStringMatch(const std::list<Graph_Line *> &matchedLines,
+                                                      const std::string &lineFromString, unsigned int graphVersion);
 
 /**
  * Find matched Node
@@ -106,8 +106,8 @@ Graph_Instruction *getMatchedInstructionFromGraph(Graph *graphToMatch, Graph_Ins
 /**
  * Import edges from ICFG instruction for added Graph_Line
  */
-void getEdgesForAddedLines(Graph *MVICFG, Graph *ICFG, std::list<Graph_Line *> addedLines,
-                           std::list<Diff_Mapping> diffMap, unsigned Version);
+void getEdgesForAddedLines(Graph *MVICFG, Graph *ICFG, const std::list<Graph_Line *> &addedLines,
+                           const std::list<Diff_Mapping> &diffMap);
 
 /**
  * Mark deleted nodes in MVICFG and returns the deleted MVICFG lines
@@ -124,5 +124,23 @@ std::map<Graph_Line *, Graph_Line *> matchedInMVICFG(Graph *MVICFG, Graph *ICFG,
  */
 void updateMVICFGVersion(Graph *MVICFG, std::list<Graph_Line *> addedLines, std::list<Graph_Line *> deletedLines,
                          std::list<Diff_Mapping> diffMap, unsigned Version);
+
+/**
+ * Calculate the number of added paths between two versions
+ */
+unsigned long long calculateAddedPaths(Graph *MVICFG, unsigned version_1, unsigned version_2);
+
+/**
+ * Calculate the number of deleted paths between two versions
+ */
+unsigned long long calculateDeletedPaths(Graph *MVICFG, unsigned version_1, unsigned version_2);
+
+/**
+ * Calculate the number of added and deleted paths between two versions
+ * Returns a pair containing number of added and deleted paths respectively
+ */
+std::pair<unsigned long long, unsigned long long> calculateChangedPaths(Graph *MVICFG, unsigned version_1,
+                                                                        unsigned version_2);
+
 } // namespace hydrogen_framework
 #endif

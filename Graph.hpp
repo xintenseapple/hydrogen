@@ -31,40 +31,40 @@ public:
    * Constructor
    * Initialize ID to zero
    */
-  Graph(unsigned ver)
+  explicit Graph(unsigned ver)
       : graphID(0), graphVersion(ver), graphEntryID(std::numeric_limits<unsigned int>::max() - 1),
         graphExitID(std::numeric_limits<unsigned int>::max() - 2) {
-    whiteList.push_back("__isoc99_scanf");
-    whiteList.push_back("printf");
-    whiteList.push_back("malloc");
-    whiteList.push_back("strlen");
-    whiteList.push_back("strcpy");
-    whiteList.push_back("strcmp");
-    whiteList.push_back("free");
-    whiteList.push_back("getpwnam");
-    whiteList.push_back("__ctype_b_loc");
-    whiteList.push_back("tolower");
-    whiteList.push_back("setpwent");
-    whiteList.push_back("getpwent");
-    whiteList.push_back("strchr");
-    whiteList.push_back("strcasecmp");
-    whiteList.push_back("perror");
-    whiteList.push_back("toupper");
-    whiteList.push_back("malloc");
-    whiteList.push_back("strlen");
-    whiteList.push_back("strcpy");
-    whiteList.push_back("strcmp");
-    whiteList.push_back("free");
-    whiteList.push_back("getpwnam");
-    whiteList.push_back("__ctype_b_loc");
-    whiteList.push_back("tolower");
-    whiteList.push_back("setpwent");
-    whiteList.push_back("getpwent");
-    whiteList.push_back("strchr");
-    whiteList.push_back("strcasecmp");
-    whiteList.push_back("perror");
-    whiteList.push_back("snprintf");
-    whiteList.push_back("toupper");
+    whiteList.emplace_back("__isoc99_scanf");
+    whiteList.emplace_back("printf");
+    whiteList.emplace_back("malloc");
+    whiteList.emplace_back("strlen");
+    whiteList.emplace_back("strcpy");
+    whiteList.emplace_back("strcmp");
+    whiteList.emplace_back("free");
+    whiteList.emplace_back("getpwnam");
+    whiteList.emplace_back("__ctype_b_loc");
+    whiteList.emplace_back("tolower");
+    whiteList.emplace_back("setpwent");
+    whiteList.emplace_back("getpwent");
+    whiteList.emplace_back("strchr");
+    whiteList.emplace_back("strcasecmp");
+    whiteList.emplace_back("perror");
+    whiteList.emplace_back("toupper");
+    whiteList.emplace_back("malloc");
+    whiteList.emplace_back("strlen");
+    whiteList.emplace_back("strcpy");
+    whiteList.emplace_back("strcmp");
+    whiteList.emplace_back("free");
+    whiteList.emplace_back("getpwnam");
+    whiteList.emplace_back("__ctype_b_loc");
+    whiteList.emplace_back("tolower");
+    whiteList.emplace_back("setpwent");
+    whiteList.emplace_back("getpwent");
+    whiteList.emplace_back("strchr");
+    whiteList.emplace_back("strcasecmp");
+    whiteList.emplace_back("perror");
+    whiteList.emplace_back("snprintf");
+    whiteList.emplace_back("toupper");
   }
 
   /**
@@ -83,7 +83,7 @@ public:
   /**
    * Return graphVersion
    */
-  unsigned getGraphVersion() { return graphVersion; }
+  [[nodiscard]] unsigned getGraphVersion() const { return graphVersion; }
 
   /**
    * Set graphVersion
@@ -129,7 +129,7 @@ public:
   /**
    * Print the graph in DOT format
    */
-  void printGraph(std::string graphName);
+  void printGraph(const std::string& graphName);
 
   /**
    * Find matching instruction in the ICFG
@@ -141,13 +141,13 @@ public:
    * Find virtual entry for the given function name
    * Can return NULL if no match is found
    */
-  Graph_Instruction *findVirtualEntry(std::string funcName);
+  Graph_Instruction *findVirtualEntry(const std::string& funcName);
 
   /**
    * Find virtual entry for the given function name
    * Can return NULL if no match is found
    */
-  Graph_Instruction *findVirtualExit(std::string funcName);
+  Graph_Instruction *findVirtualExit(const std::string& funcName);
 
   /**
    * Return graphFunctions
@@ -157,7 +157,7 @@ public:
   /**
    * Return TRUE if it is a virtual node
    */
-  bool isVirtualNodeLineNumber(unsigned lineNumber);
+  [[nodiscard]] bool isVirtualNodeLineNumber(unsigned lineNumber) const;
 
   /**
    * Return graphEdges
