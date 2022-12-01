@@ -53,10 +53,10 @@ $ clang -c -O0 -Xclang -disable-O0-optnone -g -emit-llvm -S Prog.c -o ProgV2.bc
 5) Once the LLVM IR are generated, then use Hydrogen to generate the MVICFG.
 ```sh
 # Generic Command
-$ Hydrogen.out <Path-to-LLVMIR_1> <Path-to-LLVMIR_2> .. <Path-to-LLVMIR_N> :: <Path-to-file1-for-Prog_V1> ..\
+$ hydrogen <Path-to-LLVMIR_1> <Path-to-LLVMIR_2> .. <Path-to-LLVMIR_N> :: <Path-to-file1-for-Prog_V1> ..\
  <Path-to-fileN-for-Prog_V1> :: <Path-to-file1-for-Prog_V2> .. <Path-to-fileN-for-Prog_V2> ..
 # Command for the above example from build folder
-$ ./Hydrogen.out ../TestPrograms/Buggy/ProgV1.bc ../TestPrograms/Correct/ProgV2.bc :: ../TestPrograms/Buggy/Prog.c ::\
+$ ./hydrogen ../TestPrograms/Buggy/ProgV1.bc ../TestPrograms/Correct/ProgV2.bc :: ../TestPrograms/Buggy/Prog.c ::\
  ../TestPrograms/Correct/Prog.c
 ```
 6) A python script `BuildSystem.py` is provided to ease the process of invoking the Hydrogen executable. It will also
